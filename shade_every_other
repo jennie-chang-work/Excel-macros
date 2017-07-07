@@ -1,0 +1,52 @@
+' select starting cell of the column then run macro
+' macro stops when it encounters the first blank cell
+
+Sub ShadeEveryOtherValue()
+    Dim startCell As Range
+    Dim curCell As Range
+
+    Set startCell = Selection.Resize(1, 1)
+
+    num_ckvalue = 1
+    i = 0
+    Do
+        Set curCell = startCell.Offset(i, 0).Resize(1, 1)
+        curValue = curCell.Value
+        If curValue = "" Then Exit Do
+        If preValue <> curValue And i > 0 Then num_ckvalue = num_ckvalue + 1
+        If num_ckvalue Mod 2 = 0 Then curCell.EntireRow.Interior.ColorIndex = 35 'green
+        If num_ckvalue Mod 2 <> 0 Then curCell.EntireRow.Interior.ColorIndex = 40 ' orange
+        i = i + 1
+        preValue = curValue
+    Loop
+
+End Sub
+
+' select starting cell of the column then run macro
+' macro stops when it encounters the first blank cell
+Sub LineEveryOtherValue()
+    Dim startCell As Range
+    Dim curCell As Range
+    Dim curRow As Range
+
+    Set startCell = Selection.Resize(1, 1)
+
+    num_ckvalue = 1
+    i = 0
+    Do
+        Set curCell = startCell.Offset(i, 0).Resize(1, 1)
+        curValue = curCell.Value
+        If curValue = "" Then Exit Do
+        If preValue <> curValue And i > 0 Then
+            Set curRow = curCell.EntireRow
+            With curRow.Borders(xlEdgeTop)
+                .LineStyle = xlContinuous
+                .ColorIndex = xlAutomatic
+                .Weight = xlHairline
+            End With
+        End If
+        i = i + 1
+        preValue = curValue
+    Loop
+
+End Sub
